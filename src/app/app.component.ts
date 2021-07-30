@@ -15,7 +15,7 @@ export class AppComponent implements OnInit{
 
     layoutColor = 'blue';
 
-    topbarSize = 'large';
+    topbarSize = 'small';
 
     horizontal = true;
 
