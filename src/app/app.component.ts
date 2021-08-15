@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit, Renderer2} from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -6,7 +6,6 @@ import { PrimeNGConfig } from 'primeng/api';
     templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit{
-
     topbarColor = 'layout-topbar-blue';
 
     menuColor = 'layout-menu-light';

@@ -1,24 +1,21 @@
-<div class="layout-container" (click)="onWrapperClick()"
-     [ngClass]="{'layout-menu-horizontal': app.horizontal,
-                'layout-menu-active': menuActive,
-                'layout-top-small': app.topbarSize === 'small',
-                'layout-top-medium': app.topbarSize === 'medium',
-                'layout-top-large': app.topbarSize === 'large', 'p-ripple-disabled': !app.ripple, 'p-input-filled': app.inputStyle === 'filled'}"
-                [class]="app.topbarColor + ' ' + app.menuColor">
+<app-loading></app-loading>
+<app-toast></app-toast>
+<!-- <app-idle></app-idle> -->
+<div class="layout-container layout-menu-horizontal layout-menu-active layout-top-small layout-topbar-blue layout-menu-light"
+    (click)="onWrapperClick()">
 
-    <div class="layout-top">
+    <div  [ngClass]="isStaging ? 'staging': 'layout-top'" *ngIf="!showFullScreen">
         <app-topbar></app-topbar>
-
         <div class="layout-topbar-separator"></div>
+        <!-- <app-breadcrumb></app-breadcrumb> -->
+    </div>
+<!-- 
+    <app-system-message></app-system-message> -->
 
-        <app-breadcrumb></app-breadcrumb>
+    <div class="p-input-filled" [ngClass]="{'layout-content': !showFullScreen}">
+        <router-outlet (activate)="changeOfRoutes()"></router-outlet>
     </div>
 
-    <div class="layout-content">
-        <router-outlet></router-outlet>
-    </div>
-
-    <!-- <app-config></app-config> -->
 
     <div class="layout-mask" *ngIf="menuActive" [@mask-anim]="'visible'"></div>
 

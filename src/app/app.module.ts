@@ -1,293 +1,224 @@
+import { AppMenuitemComponent } from './app.menuitem.component';
+import { ShareModule } from './erp/share/share.module';
+import { AppMenuComponent } from './app.menu.component';
+import { AppTopBarComponent } from './app.topbar.component';
+import { LoadingComponent } from './erp/share/loading/loading.component';
+import { ToastComponent } from './erp/share/toast/toast.component';
+import { AppMainComponent } from './app.main.component';
+import { AuthorizationService } from './erp/services/utility-services/authorization.service';
+import { SystemMessagesLoadedEvent } from './erp/share/system-messages-loaded.event';
+import { MenuService } from './app.menu.service';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {AppRoutingModule} from './app-routing.module';
-
 // PrimeNG Components for demos
-import {AccordionModule} from 'primeng/accordion';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {AvatarModule} from 'primeng/avatar';
-import {AvatarGroupModule} from 'primeng/avatargroup';
-import {BadgeModule} from 'primeng/badge';
-import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {ButtonModule} from 'primeng/button';
-import {CalendarModule} from 'primeng/calendar';
 import {CardModule} from 'primeng/card';
-import {CarouselModule} from 'primeng/carousel';
-import {CascadeSelectModule} from 'primeng/cascadeselect';
-import {ChartModule} from 'primeng/chart';
-import {CheckboxModule} from 'primeng/checkbox';
-import {ChipModule} from 'primeng/chip';
-import {ChipsModule} from 'primeng/chips';
-import {CodeHighlighterModule} from 'primeng/codehighlighter';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmPopupModule} from 'primeng/confirmpopup';
-import {ColorPickerModule} from 'primeng/colorpicker';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {DataViewModule} from 'primeng/dataview';
-import {DialogModule} from 'primeng/dialog';
-import {DividerModule} from 'primeng/divider';
-import {DropdownModule} from 'primeng/dropdown';
-import {FieldsetModule} from 'primeng/fieldset';
-import {FileUploadModule} from 'primeng/fileupload';
-import {FullCalendarModule} from 'primeng/fullcalendar';
-import {GalleriaModule} from 'primeng/galleria';
-import {InplaceModule} from 'primeng/inplace';
-import {InputNumberModule} from 'primeng/inputnumber';
-import {InputMaskModule} from 'primeng/inputmask';
-import {InputSwitchModule} from 'primeng/inputswitch';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
-import {KnobModule} from 'primeng/knob';
-import {LightboxModule} from 'primeng/lightbox';
-import {ListboxModule} from 'primeng/listbox';
-import {MegaMenuModule} from 'primeng/megamenu';
-import {MenuModule} from 'primeng/menu';
-import {MenubarModule} from 'primeng/menubar';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {OrderListModule} from 'primeng/orderlist';
-import {OrganizationChartModule} from 'primeng/organizationchart';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
-import {PaginatorModule} from 'primeng/paginator';
-import {PanelModule} from 'primeng/panel';
-import {PanelMenuModule} from 'primeng/panelmenu';
-import {PasswordModule} from 'primeng/password';
-import {PickListModule} from 'primeng/picklist';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {RatingModule} from 'primeng/rating';
-import {RippleModule} from 'primeng/ripple';
-import {ScrollPanelModule} from 'primeng/scrollpanel';
-import {ScrollTopModule} from 'primeng/scrolltop';
-import {SelectButtonModule} from 'primeng/selectbutton';
-import {SidebarModule} from 'primeng/sidebar';
-import {SkeletonModule} from 'primeng/skeleton';
-import {SlideMenuModule} from 'primeng/slidemenu';
-import {SliderModule} from 'primeng/slider';
-import {SplitButtonModule} from 'primeng/splitbutton';
-import {SplitterModule} from 'primeng/splitter';
-import {StepsModule} from 'primeng/steps';
-import {TabMenuModule} from 'primeng/tabmenu';
-import {TableModule} from 'primeng/table';
-import {TabViewModule} from 'primeng/tabview';
-import {TagModule} from 'primeng/tag';
-import {TerminalModule} from 'primeng/terminal';
-import {TieredMenuModule} from 'primeng/tieredmenu';
-import {TimelineModule} from 'primeng/timeline';
 import {ToastModule} from 'primeng/toast';
-import {ToggleButtonModule} from 'primeng/togglebutton';
-import {ToolbarModule} from 'primeng/toolbar';
-import {TooltipModule} from 'primeng/tooltip';
-import {TreeModule} from 'primeng/tree';
-import {TreeTableModule} from 'primeng/treetable';
-import {VirtualScrollerModule} from 'primeng/virtualscroller';
-
-// Application Components
-import {AppCodeModule} from './app.code.component';
-import {AppComponent} from './app.component';
-import {AppMainComponent} from './app.main.component';
-import {AppMenuComponent} from './app.menu.component';
-import {AppMenuitemComponent} from './app.menuitem.component';
-import {AppBreadcrumbComponent} from './app.breadcrumb.component';
-import {AppConfigComponent} from './app.config.component';
-import {AppTopBarComponent} from './app.topbar.component';
-import {AppFooterComponent} from './app.footer.component';
-import {AppCrudComponent} from './pages/app.crud.component';
-import {AppCalendarComponent} from './pages/app.calendar.component';
-import {AppTimelineDemoComponent} from './pages/app.timelinedemo.component';
-import {AppInvoiceComponent} from './pages/app.invoice.component';
-import {AppHelpComponent} from './pages/app.help.component';
-import {AppNotfoundComponent} from './pages/app.notfound.component';
-import {AppErrorComponent} from './pages/app.error.component';
-import {AppAccessdeniedComponent} from './pages/app.accessdenied.component';
-import {AppLoginComponent} from './pages/app.login.component';
-
-// Demo pages
-import {DashboardComponent} from './demo/view/dashboard.component';
-import {FormLayoutDemoComponent} from './demo/view/formlayoutdemo.component';
-import {FloatLabelDemoComponent} from './demo/view/floatlabeldemo.component';
-import {InvalidStateDemoComponent} from './demo/view/invalidstatedemo.component';
-import {InputDemoComponent} from './demo/view/inputdemo.component';
-import {ButtonDemoComponent} from './demo/view/buttondemo.component';
-import {TableDemoComponent} from './demo/view/tabledemo.component';
-import {ListDemoComponent} from './demo/view/listdemo.component';
-import {TreeDemoComponent} from './demo/view/treedemo.component';
-import {PanelsDemoComponent} from './demo/view/panelsdemo.component';
-import {OverlaysDemoComponent} from './demo/view/overlaysdemo.component';
-import {MenusDemoComponent} from './demo/view/menusdemo.component';
-import {MediaDemoComponent} from './demo/view/mediademo.component';
-import {MessagesDemoComponent} from './demo/view/messagesdemo.component';
-import {MiscDemoComponent} from './demo/view/miscdemo.component';
-import {EmptyDemoComponent} from './demo/view/emptydemo.component';
-import {ChartsDemoComponent} from './demo/view/chartsdemo.component';
-import {FileDemoComponent} from './demo/view/filedemo.component';
-import {DocumentationComponent} from './demo/view/documentation.component';
-import {DisplayComponent} from './utilities/display.component';
-import {ElevationComponent} from './utilities/elevation.component';
-import {FlexboxComponent} from './utilities/flexbox.component';
-import {GridComponent} from './utilities/grid.component';
-import {IconsComponent} from './utilities/icons.component';
-import {WidgetsComponent} from './utilities/widgets.component';
-import {SpacingComponent} from './utilities/spacing.component';
-import {TypographyComponent} from './utilities/typography.component';
-import {TextComponent} from './utilities/text.component';
-
-// Demo services
-import {CountryService} from './demo/service/countryservice';
-import {CustomerService} from './demo/service/customerservice';
-import {EventService} from './demo/service/eventservice';
-import {IconService} from './demo/service/iconservice';
-import {NodeService} from './demo/service/nodeservice';
-import {PhotoService} from './demo/service/photoservice';
-import {ProductService} from './demo/service/productservice';
-import {BreadcrumbService} from './app.breadcrumb.service';
-import {MenuService} from './app.menu.service';
-
+import { HttpsAuthRequestInterceptor } from './erp/services/utility-services/auth.interceptor';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { TextMaskModule } from 'angular2-text-mask';
+import { MomentModule } from 'angular2-moment';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationService } from './erp/services/utility-services/authentication.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { RouteDataService } from './erp/services/utility-services/route-data.service';
+import { FullScreenService } from './erp/services/utility-services/full-screen.service';
+import { BroadcasterService } from './erp/services/utility-services/broadcaster.service';
+import { AppComponent } from './app.component';
+import { ConfigDataLoadedEvent } from './erp/share/config-data-loaded.event';
+import {
+    FaIconLibrary,
+    FontAwesomeModule,
+  } from '@fortawesome/angular-fontawesome';
+  import {
+    faChartBar,
+    faChartLine,
+    faChevronCircleDown,
+    faChevronCircleRight,
+    faCog,
+    faCogs,
+    faCommentDollar,
+    faCommentDots,
+    faCopy,
+    faDatabase,
+    faExclamationTriangle,
+    faFileContract,
+    faFileInvoiceDollar,
+    faFileUpload,
+    faGreaterThan,
+    faGreaterThanEqual,
+    faHammer,
+    faHandshake,
+    faInfoCircle,
+    faListUl,
+    faMailBulk,
+    faRetweet,
+    faSearch,
+    faServer,
+    faSignInAlt,
+    faTheaterMasks,
+    faUpload,
+    faDownload,
+    faUserCircle,
+    faUserFriends,
+    faUserPlus,
+    faUsers,
+    faUserShield,
+    faTasks,
+    faFilter,
+    faPlus,
+    faTimes,
+    faExpandArrowsAlt,
+    faArrowAltCircleDown,
+    faArrowAltCircleUp,
+    faTrash,
+    faClone,
+    faFileExcel,
+    faBookOpen,
+    faEnvelope,
+    faImages,
+    faCalendarAlt,
+    faFileDownload,
+    faPen,
+    faBars,
+    faArrowsAlt,
+    faUserEdit,
+    faUser,
+    faTimesCircle,
+    faNewspaper,
+    faProjectDiagram,
+    faClipboard,
+    faBullhorn,
+    faHistory,
+    faIdCard,
+    faRegistered,
+    faClock,
+    faMinusCircle,
+    faExchangeAlt,
+  } from '@fortawesome/free-solid-svg-icons';
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         AppRoutingModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        AccordionModule,
-        AutoCompleteModule,
-        AvatarModule,
-        AvatarGroupModule,
-        BadgeModule,
-        BreadcrumbModule,
+        FontAwesomeModule,
+        TextMaskModule, 
+        NgIdleKeepaliveModule.forRoot(),
+        MomentModule,
         ButtonModule,
-        CalendarModule,
-        CardModule,
-        CarouselModule,
-        CascadeSelectModule,
-        ChartModule,
-        CheckboxModule,
-        ChipModule,
-        ChipsModule,
-        CodeHighlighterModule,
-        ConfirmDialogModule,
-        ConfirmPopupModule,
-        ColorPickerModule,
-        ContextMenuModule,
-        DataViewModule,
-        DialogModule,
-        DividerModule,
-        DropdownModule,
-        FieldsetModule,
-        FileUploadModule,
-        FullCalendarModule,
-        GalleriaModule,
-        InplaceModule,
-        InputNumberModule,
-        InputMaskModule,
-        InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
-        KnobModule,
-        LightboxModule,
-        ListboxModule,
-        MegaMenuModule,
-        MenuModule,
-        MenubarModule,
-        MessageModule,
-        MessagesModule,
-        MultiSelectModule,
-        OrderListModule,
-        OrganizationChartModule,
-        OverlayPanelModule,
-        PaginatorModule,
-        PanelModule,
-        PanelMenuModule,
-        PasswordModule,
-        PickListModule,
-        ProgressBarModule,
-        RadioButtonModule,
-        RatingModule,
-        RippleModule,
-        ScrollPanelModule,
-        ScrollTopModule,
-        SelectButtonModule,
-        SidebarModule,
-        SkeletonModule,
-        SlideMenuModule,
-        SliderModule,
-        SplitButtonModule,
-        SplitterModule,
-        StepsModule,
-        TableModule,
-        TabMenuModule,
-        TabViewModule,
-        TagModule,
-        TerminalModule,
-        TimelineModule,
-        TieredMenuModule,
         ToastModule,
-        ToggleButtonModule,
-        ToolbarModule,
-        TooltipModule,
-        TreeModule,
-        TreeTableModule,
-        VirtualScrollerModule,
-        AppCodeModule
+        HttpClientModule,
+        CardModule,
+        ShareModule
     ],
     declarations: [
         AppComponent,
         AppMainComponent,
+        AppTopBarComponent,
         AppMenuComponent,
         AppMenuitemComponent,
-        AppTopBarComponent,
-        AppFooterComponent,
-        AppConfigComponent,
-        AppBreadcrumbComponent,
-        DashboardComponent,
-        FormLayoutDemoComponent,
-        FloatLabelDemoComponent,
-        InvalidStateDemoComponent,
-        InputDemoComponent,
-        ButtonDemoComponent,
-        TableDemoComponent,
-        ListDemoComponent,
-        TreeDemoComponent,
-        PanelsDemoComponent,
-        OverlaysDemoComponent,
-        MenusDemoComponent,
-        MediaDemoComponent,
-        MessagesDemoComponent,
-        MiscDemoComponent,
-        ChartsDemoComponent,
-        EmptyDemoComponent,
-        FileDemoComponent,
-        DocumentationComponent,
-        DisplayComponent,
-        ElevationComponent,
-        FlexboxComponent,
-        GridComponent,
-        IconsComponent,
-        WidgetsComponent,
-        SpacingComponent,
-        TypographyComponent,
-        TextComponent,
-        AppCrudComponent,
-        AppCalendarComponent,
-        AppLoginComponent,
-        AppInvoiceComponent,
-        AppHelpComponent,
-        AppNotfoundComponent,
-        AppErrorComponent,
-        AppTimelineDemoComponent,
-        AppAccessdeniedComponent,
     ],
     providers: [
-        {provide: LocationStrategy, useClass: HashLocationStrategy},
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, MenuService, BreadcrumbService
+        MessageService,
+        ConfirmationService,
+        RouteDataService,
+        CookieService,
+        FullScreenService,
+        AuthenticationService,
+        AuthorizationService,
+        BroadcasterService,
+        ConfigDataLoadedEvent,
+        SystemMessagesLoadedEvent,
+        MenuService,  
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpsAuthRequestInterceptor,
+            multi: true,
+          },
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(library: FaIconLibrary) {
+        this.buildFontAwesomeLibrary(library);
+      }
+
+      buildFontAwesomeLibrary(library: FaIconLibrary) {
+        // Add an icon to the library for convenient access in other components
+        library.addIcons(faUpload);
+        library.addIcons(faCog);
+        library.addIcons(faCogs);
+        library.addIcons(faUsers);
+        library.addIcons(faUserCircle);
+        library.addIcons(faUserFriends);
+        library.addIcons(faUserPlus);
+        library.addIcons(faUserShield);
+        library.addIcons(faFileUpload);
+        library.addIcons(faCommentDots);
+        library.addIcons(faDatabase);
+        library.addIcons(faFileInvoiceDollar);
+        library.addIcons(faChartLine);
+        library.addIcons(faChartBar);
+        library.addIcons(faSearch);
+        library.addIcons(faTheaterMasks);
+        library.addIcons(faInfoCircle);
+        library.addIcons(faRetweet);
+        library.addIcons(faFileContract);
+        library.addIcons(faListUl);
+        library.addIcons(faSignInAlt);
+        library.addIcons(faChevronCircleDown);
+        library.addIcons(faChevronCircleRight);
+        library.addIcons(faMailBulk);
+        library.addIcons(faExclamationTriangle);
+        library.addIcons(faHandshake);
+        library.addIcons(faCopy);
+        library.addIcons(faServer);
+        library.addIcons(faGreaterThanEqual);
+        library.addIcons(faGreaterThan);
+        library.addIcons(faHammer);
+        library.addIcons(faCommentDollar);
+        library.addIcons(faRegistered);
+        library.addIcons(faTasks);
+        library.addIcons(faFilter);
+        library.addIcons(faPlus);
+        library.addIcons(faTimes);
+        library.addIcons(faExpandArrowsAlt);
+        library.addIcons(faArrowAltCircleDown);
+        library.addIcons(faArrowAltCircleUp);
+        library.addIcons(faTrash);
+        library.addIcons(faClone);
+        library.addIcons(faFileExcel);
+        library.addIcons(faBookOpen);
+        library.addIcons(faEnvelope);
+        library.addIcons(faImages);
+        library.addIcons(faCalendarAlt);
+        library.addIcons(faDownload);
+        library.addIcons(faFileDownload);
+        library.addIcons(faPen);
+        library.addIcons(faBars);
+        library.addIcons(faArrowsAlt);
+        library.addIcons(faUserEdit);
+        library.addIcons(faUser);
+        library.addIcons(faTimesCircle);
+        library.addIcons(faNewspaper);
+        library.addIcons(faProjectDiagram);
+        library.addIcons(faClipboard);
+        library.addIcons(faBullhorn);
+        library.addIcons(faUpload);
+        library.addIcons(faHistory);
+        library.addIcons(faIdCard);
+        library.addIcons(faFileContract);
+        library.addIcons(faClock);
+        library.addIcons(faMinusCircle);
+        library.addIcons(faExchangeAlt);
+      }
+ }

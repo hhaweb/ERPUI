@@ -1,8 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfigData } from './erp/models/config/config.model';
+import { ERPRoutes } from './erp/models/routes/erp-routes';
+import { Component, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MenuService } from './app.menu.service';
 import { PrimeNGConfig } from 'primeng/api';
 import {AppComponent} from './app.component';
+import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { CookieService } from 'ngx-cookie-service';
+import { ErpUtilityService } from './erp/services/utility-services/erp-utility.service';
+import { AuthenticationService } from './erp/services/utility-services/authentication.service';
+import { AuthorizationService } from './erp/services/utility-services/authorization.service';
+import { FullScreenService } from './erp/services/utility-services/full-screen.service';
+import { ConfigDataLoadedEvent } from './erp/share/config-data-loaded.event';
+import { SystemMessagesLoadedEvent } from './erp/share/system-messages-loaded.event';
 
 @Component({
     selector: 'app-main',
@@ -19,10 +30,10 @@ import {AppComponent} from './app.component';
         ])
     ]
 })
-export class AppMainComponent {
-
+export class AppMainComponent implements OnInit, OnDestroy{
+    showFullScreen: boolean;
     menuClick: boolean;
-
+    configData: ConfigData;
     userMenuClick: boolean;
 
     topbarUserMenuActive: boolean;
@@ -30,10 +41,56 @@ export class AppMainComponent {
     menuActive: boolean;
 
     menuHoverActive: boolean;
-
     configDialogActive: boolean;
+    constructor(
+        private menuService: MenuService, 
+        private primengConfig: PrimeNGConfig, 
+        public app: AppComponent,
+        private router: Router,
+        public renderer: Renderer2,
+        public zone: NgZone,
+        private pageTitleService: Title,
+        private cookieService: CookieService,
+        private erpUtilityService: ErpUtilityService,
+        private authenticationService: AuthenticationService,
+        private authorizationService: AuthorizationService,
+        private fullScreenService: FullScreenService,
+        private configDataLoadedEvent: ConfigDataLoadedEvent,
+        private systemMessagesLoadedEvent: SystemMessagesLoadedEvent) {}
+    ngOnInit() {
+        this.fullScreenService.on().subscribe(() => {
+            this.showFullScreen = true;
+          });
+        if (this.authenticationService.isAuthorized()) {
+            this.authenticationService.UserLoggedIn.next(true);
+           // this.loadApplicationData();
+          } else {
+            // this.redirectToLogin();
+          }
+    }
 
-    constructor(private menuService: MenuService, private primengConfig: PrimeNGConfig, public app: AppComponent) {}
+    ngOnDestroy() {
+
+    }
+
+    changeOfRoutes() {
+    this.pageTitleService.setTitle('Mini ERP');   
+    this.showFullScreen = false;
+    if (!this.authenticationService.isAuthorized()) {
+        this.redirectToLogin();
+    } 
+    }
+
+    redirectToLogin() {
+        if (!this.authorizationService.isAllowAnonymous()) {
+            // Generate returnUrl Parameters
+            void this.router.navigate([ERPRoutes.Login], {
+            queryParams: {
+                return: this.router.routerState.snapshot.url,
+            },
+            });
+        }
+    }
 
     blockBodyScroll(): void {
         if (document.body.classList) {
@@ -124,4 +181,5 @@ export class AppMainComponent {
         this.app.ripple = event.checked;
         this.primengConfig.ripple = event.checked;
     }
+ 
 }
