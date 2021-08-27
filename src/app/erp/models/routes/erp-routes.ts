@@ -9,5 +9,6 @@ export const ERPRoutes = {
   // customer 
   Customer: 'customer',
   CustomerList: 'customer-list',
-  CustomerEntry: 'customer-entry'
+  CustomerEntry: 'customer-entry',
+  Item: 'item',
 };

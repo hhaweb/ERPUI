@@ -1,3 +1,4 @@
+import { ItemService } from './erp/services/controller-services/item-service.service';
 import { AppMenuitemComponent } from './app.menuitem.component';
 import { ShareModule } from './erp/share/share.module';
 import { AppMenuComponent } from './app.menu.component';
@@ -102,6 +103,9 @@ import {
     faMinusCircle,
     faExchangeAlt,
   } from '@fortawesome/free-solid-svg-icons';
+import { JsUtilityService } from './erp/services/utility-services/js-utility.service';
+import {TooltipModule} from 'primeng/tooltip';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -118,7 +122,8 @@ import {
         ToastModule,
         HttpClientModule,
         CardModule,
-        ShareModule
+        ShareModule,
+        TooltipModule
     ],
     declarations: [
         AppComponent,
@@ -128,22 +133,24 @@ import {
         AppMenuitemComponent,
     ],
     providers: [
-        MessageService,
-        ConfirmationService,
-        RouteDataService,
-        CookieService,
-        FullScreenService,
-        AuthenticationService,
-        AuthorizationService,
-        BroadcasterService,
-        ConfigDataLoadedEvent,
-        SystemMessagesLoadedEvent,
-        MenuService,  
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: HttpsAuthRequestInterceptor,
-            multi: true,
-          },
+      ItemService,
+      JsUtilityService,
+      MessageService,
+      ConfirmationService,
+      RouteDataService,
+      CookieService,
+      FullScreenService,
+      AuthenticationService,
+      AuthorizationService,
+      BroadcasterService,
+      ConfigDataLoadedEvent,
+      SystemMessagesLoadedEvent,
+      MenuService,  
+      {
+          provide: HTTP_INTERCEPTORS,
+          useClass: HttpsAuthRequestInterceptor,
+          multi: true,
+      },
     ],
     bootstrap: [AppComponent]
 })

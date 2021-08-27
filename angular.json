@@ -31,6 +31,7 @@
             "styles": [
               "src/assets/theme/theme-blue.css",
               "src/assets/layout/css/layout-blue.css",
+              "src/primeng-overrides.scss",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",

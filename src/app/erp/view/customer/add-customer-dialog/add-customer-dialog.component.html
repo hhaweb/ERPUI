@@ -1,0 +1,51 @@
+<p-dialog #customerDialog [(visible)]="showDialog" [modal]="true" [style]="{width: '50vw'}" (onHide)="cancel()">
+    <p-header>
+       Add Customer
+    </p-header>
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Id</div>
+        <div class="p-col-4">
+          <span *ngIf="customer.Id" style="font-weight: bold;">
+            {{customer.Id}}
+          </span>
+          <span *ngIf="!customer.Id">
+             TBA
+          </span>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Name</div>
+        <div class="p-col-4">
+            <input type="text" pInputText [(ngModel)]="customer.name" />
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Phone</div>
+        <div class="p-col-4">
+            <input type="text" pInputText [(ngModel)]="customer.phone" />
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Mobile</div>
+        <div class="p-col-4">
+            <input type="text" pInputText [(ngModel)]="customer.mobile" />
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Address</div>
+        <div class="p-col-4">
+            <textarea rows="1" cols="30" pInputTextarea autoResize="autoResize" [(ngModel)]="customer.address"></textarea>
+        </div>
+    </div>
+
+    <p-footer>        
+        <div class="p-grid p-jc-end">
+            <button class ="p-col-1" type="button" pButton (click)="save()" label="Save"></button>
+            <button class ="p-col-1" type="button" pButton class="p-button-secondary" (click)="cancel()" label="Cancel"></button>
+        </div>
+    </p-footer>
+</p-dialog>

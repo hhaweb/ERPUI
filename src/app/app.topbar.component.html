@@ -6,9 +6,9 @@
 
     <div class="layout-topbar-grid">
         <div class="layout-topbar-grid-column layout-topbar-grid-column-fixed">
-            <a href="#" class="layout-logo">
+            <!-- <a href="#" class="layout-logo">
                 <img src="assets/layout/images/logo-white.svg" alt="sapphire-layout" />
-            </a>
+            </a> -->
         </div>
 
         <div class="layout-topbar-grid-column">
@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li role="menuitem">
-                    <a href="#" pRipple (click)="app.onTopbarSubItemClick($event)">
+                    <a href="#" pRipple (click)="app.onTopbarSubItemClick($event);logout()">
                         <i class="pi pi-times"></i>
                         <span>Logout</span>
                     </a>
