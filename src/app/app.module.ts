@@ -1,10 +1,7 @@
-import { ItemService } from './erp/services/controller-services/item-service.service';
 import { AppMenuitemComponent } from './app.menuitem.component';
 import { ShareModule } from './erp/share/share.module';
 import { AppMenuComponent } from './app.menu.component';
 import { AppTopBarComponent } from './app.topbar.component';
-import { LoadingComponent } from './erp/share/loading/loading.component';
-import { ToastComponent } from './erp/share/toast/toast.component';
 import { AppMainComponent } from './app.main.component';
 import { AuthorizationService } from './erp/services/utility-services/authorization.service';
 import { SystemMessagesLoadedEvent } from './erp/share/system-messages-loaded.event';
@@ -105,6 +102,7 @@ import {
   } from '@fortawesome/free-solid-svg-icons';
 import { JsUtilityService } from './erp/services/utility-services/js-utility.service';
 import {TooltipModule} from 'primeng/tooltip';
+import { CommonService } from './erp/services/controller-services/common.service';
 
 @NgModule({
     imports: [
@@ -133,7 +131,6 @@ import {TooltipModule} from 'primeng/tooltip';
         AppMenuitemComponent,
     ],
     providers: [
-      ItemService,
       JsUtilityService,
       MessageService,
       ConfirmationService,
@@ -145,6 +142,7 @@ import {TooltipModule} from 'primeng/tooltip';
       BroadcasterService,
       ConfigDataLoadedEvent,
       SystemMessagesLoadedEvent,
+      CommonService,
       MenuService,  
       {
           provide: HTTP_INTERCEPTORS,

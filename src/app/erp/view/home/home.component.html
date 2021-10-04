@@ -1,1 +1,23 @@
-<p>home works!</p>
+<div class="p-grid p-jc-center p-ai-center max-height">
+   <div class="p-col-4 ">
+    <p-card [style]="{width: '100%', height: '350px'}">
+        <div class="p-grid p-jc-around">
+            <div class="p-col-5  menu" style="background-color: #4caf50;" (click)="goToRoute('Sale')">
+                <div><span><i class=" pi pi-shopping-cart" style="font-size: 2rem"></i> </span><br>Sale </div>      
+            </div>
+            <div class="p-col-5  menu" style="background-color: #1E88E5;" (click)="goToRoute('Purchase')">   
+                <div><span><i class=" pi pi-shopping-cart" style="font-size: 2rem"></i> </span><br>Purchase</div> 
+            </div>
+        </div>
+
+        <div class="p-grid p-jc-around" style="margin-top: 30px;" >
+            <div class="p-col-5  menu" style="background-color: #1E88E5;" (click)="goToRoute('Report')">     
+                <div><span><i class=" pi pi-book" style="font-size: 2rem"></i> </span><br>Report </div>          
+            </div>
+            <div class="p-col-5  menu"  style="background-color: #4caf50;" (click)="goToRoute('Profit')">
+                <div><span><i class=" pi pi-dollar" style="font-size: 2rem"></i> </span><br>Profit</div>               
+            </div>
+        </div>
+    </p-card>
+   </div>
+</div>

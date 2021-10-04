@@ -14,6 +14,7 @@ import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     InputTextareaModule,
     ButtonModule,
-    TooltipModule
+    TooltipModule,
+    InputNumberModule
   ]
 })
 export class ItemModule { }

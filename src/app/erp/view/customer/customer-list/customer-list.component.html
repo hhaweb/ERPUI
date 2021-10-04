@@ -14,19 +14,20 @@
                     [totalRecords]="totalRecord" [responsive]="true">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width: 50px;"> <!-- Id -->
-                                <col style="width: 100px;"> <!-- Name -->
-                                <col style="width: 100px;"> <!-- Phone -->
-                                <col style="width: 100px;"> <!-- Mobile -->
+                                <col style="width: 50px;"> <!-- id -->
+                                <col style="width: 150px;"> <!-- Name -->
+                                <col style="width: 90px;"> <!-- Phone -->
+                                <col style="width: 90px;"> <!-- Mobile -->
                                 <col style="width: 100px;"> <!-- Address -->
-                                <col style="width: 100px;"> <!-- Created Date -->
-                                <col style="width: 100px;"> <!-- Action -->
+                                <col style="width: 150px;"> <!-- remark -->
+                                <col style="width: 90px;"> <!-- Created Date -->
+                                <col style="width: 90px;"> <!-- Action -->
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="text-left" pSortableColumn="Id">Id
-                                    <p-sortIcon field="Id"></p-sortIcon>
+                                <th class="text-left" pSortableColumn="id">id
+                                    <p-sortIcon field="id"></p-sortIcon>
                                 </th>
                                 <th class="text-left" pSortableColumn="name">Name
                                     <p-sortIcon field="name"></p-sortIcon>
@@ -39,6 +40,9 @@
                                 </th>
                                 <th class="text-left" pSortableColumn="address">Address
                                     <p-sortIcon field="address"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="remark">Remark
+                                    <p-sortIcon field="remark"></p-sortIcon>
                                 </th>
                                 <th class="text-left" pSortableColumn="createDate">Created Date
                                     <p-sortIcon field="createDate"></p-sortIcon>
@@ -54,14 +58,14 @@
                                 <td><span class="one-line-span" [pTooltip]="customer.phone">{{customer.phone}}</span></td>
                                 <td><span class="one-line-span" [pTooltip]="customer.mobile">{{customer.mobile}}</span></td>
                                 <td><span class="one-line-span" [pTooltip]="customer.address">{{customer.address}}</span></td>
-    
+                                <td><span class="one-line-span" [pTooltip]="customer.remark">{{customer.remark}}</span></td>
                                 <td><span *ngIf="customer.createdDate != null">{{customer.createdDate || '' | date: 'dd/MM/yyyy'}}</span>
                                 <td>
                                     <a>
                                         <i class="pi pi-pencil pr-15" (click) = "edit(customer)"></i>
                                     </a>
                                     <a>
-                                        <i class="pi pi-trash red" (click)="delete(customer)"></i>
+                                        <i class="pi pi-trash red" (click)="delete($event ,customer.id)"></i>
                                     </a>
                                    
                                 </td>
@@ -69,7 +73,7 @@
                         </ng-template>
                         <ng-template pTemplate="emptymessage" let-columns>
                             <tr>
-                                <td [attr.colspan]="7">
+                                <td [attr.colspan]="8">
                                     No records found
                                 </td>
                             </tr>

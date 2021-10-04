@@ -42,7 +42,7 @@ export class JsUtilityService {
     const blob = response.body;
     // attachment; filename="FileName.xlsx"
     const re = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/; // get filename.xlsx from above
-    const contentDisposition = response.headers.get('content-disposition');
+    const contentDisposition = response.headers.get('Content-Disposition');
     console.log(contentDisposition);
     const filenameArray = contentDisposition.match(re);
     let filename = contentDisposition;

@@ -33,6 +33,14 @@ export class AddItemDialogComponent implements OnInit {
       this.erpUtilityService.showWarning('Warning', 'Please add name');
       return;
     }
+    if(this.item.buyPrice <= 0) {
+      this.erpUtilityService.showWarning('Warning', 'Please add buy price');
+      return;
+    }
+    if(this.item.sellPrice <= 0) {
+      this.erpUtilityService.showWarning('Warning', 'Please add sale price');
+      return;
+    }
     this.erpUtilityService.showLoading('Saving');
     this.itemService.saveItem(this.item).subscribe(
       (response: HttpResponseData) => {
@@ -56,7 +64,7 @@ export class AddItemDialogComponent implements OnInit {
     console.log('before =', this.item)
     this.item = inputModel;
     console.log('input', this.item)
-    if(this.item.Id == 0) {
+    if(this.item.id == 0) {
       this.idPlaceHolderText = 'TBA';
       this.idTextBoxDisable = true;
     } else {

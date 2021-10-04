@@ -15,9 +15,12 @@ export class ItemService {
     private httpClient: HttpClient,
     private jsUtilityService: JsUtilityService) { }
 
-    getItemList(): Observable<Item[]> {
+    getItemList(checkClosing : boolean = false): Observable<Item[]> {
+      const check = checkClosing ? '1' : '0';
+      let params = new HttpParams();
+      params = params.append('checkClosing', check);
       return this.httpClient.get<Item[]>(
-        APIUrls.ItemUrl.itemList,
+        APIUrls.ItemUrl.itemList,{params}
       );
     }
 
@@ -28,9 +31,9 @@ export class ItemService {
       );
     }
 
-    deleteItem(id: string): Observable<HttpResponseData> {
+    deleteItem(id: number): Observable<HttpResponseData> {
       let params = new HttpParams();
-      params = params.append('id', id);
+      params = params.append('itemId', id.toString());
       return this.httpClient.get<HttpResponseData>(APIUrls.ItemUrl.deleteItem,{params});
     }
 }

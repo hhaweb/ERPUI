@@ -1,0 +1,29 @@
+.max-height {
+    height: 90vh;
+}
+
+.main-panel {
+    height: 300px;
+}
+
+.menu{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 140px;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+.menu:hover {
+    cursor: pointer;
+    border: 5px solid rgb(240, 234, 234);
+}
+
+.margin-top-50 {
+    margin-top: 50px;
+}

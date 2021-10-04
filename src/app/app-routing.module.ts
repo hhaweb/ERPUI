@@ -24,6 +24,16 @@ const routes: Routes = [
         loadChildren: () =>
             import('./erp/view/item/item.module').then((m) => m.ItemModule),
     },
+    {
+        path: ERPRoutes.Sale,
+        loadChildren: () =>
+            import('./erp/view/sale/sale.module').then((m) => m.SaleModule),
+    }, 
+    {
+        path: ERPRoutes.Purchase,
+        loadChildren: () =>
+            import('./erp/view/purchase/purchase.module').then((m) => m.PurchaseModule),
+    },
 ];
 
 @NgModule({

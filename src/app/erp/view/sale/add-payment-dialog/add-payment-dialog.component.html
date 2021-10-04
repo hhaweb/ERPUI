@@ -1,0 +1,60 @@
+<p-dialog #paymentDialog [(visible)]="showDialog" [modal]="true" [style]="{width: '50vw'}" (onHide)="cancel()">
+    <p-header>
+       Add Customer
+    </p-header>
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">id</div>
+        <div class="p-col-4">
+          <span *ngIf="payment.id" style="font-weight: bold;">
+            {{payment.id}}
+          </span>
+          <span *ngIf="!payment.id">
+             TBA
+          </span>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Customer Name</div>
+        <div class="p-col-4">
+            <p-autoComplete   [required]="true" [(ngModel)]="selectedCustomer" delay = '800' showEmptyMessage="true" [suggestions]="customerSuggestList" 
+            (completeMethod)="getCustomerAutoComplete($event)" (onSelect)="selectCustomer($event)" field="name" [minLength]="1"   appendTo="body"></p-autoComplete>
+        </div>
+        <div class="p-col-3" *ngIf="selectedCustomer">
+            <span class="red" *ngIf = "previousTotalCredit > 0">Previous total credit</span>
+            <span class="green" *ngIf = "0 > previousTotalCredit">Prepaid pay amount</span>
+        </div>
+        <div  class="p-col-2 red" *ngIf="selectedCustomer && previousTotalCredit > 0">
+           <span class="red" *ngIf = "previousTotalCredit > 0"> {{ previousTotalCredit  | number: "1.0-0"}}</span>
+           <span class="red" *ngIf = "0 > previousTotalCredit"> {{ previousTotalCredit  | number: "1.0-0"}}</span>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Payment Date</div>
+        <div class="p-col-4">
+            <p-calendar class="full-width" [(ngModel)]="selectedPayDate" [showIcon]="true" inputId="icon"></p-calendar>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Pay Amount</div>
+        <div class="p-col-4">
+            <p-inputNumber class="full-width" [(ngModel)]="payAmount"  min="0"></p-inputNumber>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Remark</div>
+        <div class="p-col-4">
+            <textarea [(ngModel)]="payment.remark" rows="2" cols="30" pInputTextarea></textarea>
+        </div>
+    </div>
+     
+    <p-footer>        
+        <div class="p-grid p-jc-end">
+            <button class ="p-col-1" type="button" pButton (click)="save()" label="Save"></button>
+            <button class ="p-col-1" type="button" pButton class="p-button-secondary" (click)="cancel()" label="Cancel"></button>
+        </div>
+    </p-footer>
+</p-dialog>

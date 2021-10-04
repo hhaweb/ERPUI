@@ -18,9 +18,19 @@ export class ConfigData {
   }
   
   export class TopMenuItem {
-    public label: string;
-    public icon: string;
-    public items: MenuItems[];
+    public name: string;
+    public route: string;
+    public iconClass: string;
+    public hasChildren: boolean;
+    public itemState: string;
+    public isExternal: boolean;
+    public routeParam: any;
+    public queryParam: any;
+    public includeResources: string;
+    public children: TopMenuItem[];
+    constructor() {
+      this.itemState = 'collapsed';
+    }
   }
 
   export class MenuItems {

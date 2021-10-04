@@ -1,0 +1,115 @@
+<p-dialog #saleDialog [(visible)]="showDialog" [modal]="true" [style]="{width: '70vw'}" (onHide)="cancel()">
+    <p-header>
+      Create Sale
+    </p-header>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2 font-bold">Id</div>
+        <div class="p-col-4 font-bold">
+          <span *ngIf="sale.id">
+            {{sale.id}}
+          </span>
+          <span *ngIf="!sale.id">
+             TBA
+          </span>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2 ">Customer</div>
+        <div class="p-col-4">
+          <p-autoComplete   [required]="true" [(ngModel)]="selectedCustomer" delay = '800' showEmptyMessage="true" [suggestions]="customerSuggestList" 
+          (completeMethod)="getCustomerAutoComplete($event)" (onSelect)="selectCustomer($event)" field="name" min="1"   appendTo="body"></p-autoComplete>
+        </div>
+        <div class="p-col-3 font-bold">
+          <span class="red" *ngIf = "previousTotalCredit > 0">Previous total credit</span>
+          <span  class="green" *ngIf = "0 > previousTotalCredit">Prepaid pay amount</span>
+      </div>
+      <div  class="p-col-2 font-bold font-bold">
+         <span pTooltip="Credit amount" class="red" *ngIf = "previousTotalCredit > 0"> {{ previousTotalCredit  | number: "1.0-0"}}</span>
+         <span pTooltip="Prepaid amount" class="green" *ngIf = "0 > previousTotalCredit"> {{ previousTotalCredit * -1 | number: "1.0-0"}}</span>
+      </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+      <div class="p-col-2">Order Date</div>
+      <div class="p-col-4">
+        <p-calendar [(ngModel)]="selectedOrderDate" [showIcon]="true" inputId="icon"></p-calendar>
+      </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+      <div class="p-col-2"><strong>Item Type</strong></div>
+      <div class="p-col-1 text-right"><strong>Closing Qty</strong></div>
+      <div class="p-col-1 text-right"><strong>Qty</strong></div>
+      <div class="p-col-2 text-right"><strong>Price</strong></div>
+      <div class="p-col-2 text-right pr-11"><strong>Total</strong></div>
+      <div class="p-col-2 ">
+        <p-button label="add item" icon="pi pi-plus" (click)="addNewItem()" [disabled] = "addBtnDisable"></p-button>
+      </div>
+    </div>
+    
+    <div class="p-grid p-ai-center p-col-12" *ngFor="let item of saleItem">
+      <div class="p-col-2">
+        <p-dropdown   [required]="true" appendTo="body" [options]="availabelItemLsit"  (onChange) = "selectItem(item)" [(ngModel)]="item.itemId" ></p-dropdown>
+      </div>
+      <div class="p-col-1 text-right">
+        <strong>{{item.closingQty }}</strong>
+      </div>
+      <div class="p-col-1 text-right">
+        <p-inputNumber  class="input-right"[(ngModel)]="item.qty"  (onBlur)="changeValue(item)" min="0" ></p-inputNumber>
+      </div>
+      <div class="p-col-2 text-right">
+        <p-inputNumber class="input-right" [(ngModel)]="item.price" (onBlur)="changeValue(item)"  min="0"></p-inputNumber>
+      </div>
+      <div class="p-col-2 text-right pr-11">
+        {{item.total | number: "1.0-0"}}
+      </div>
+      <div class="p-col-2 ">
+        <span  pTooltip="remove item" class="pointer red" (click)="removeItem(item)">
+          <i class="pi pi-trash"></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="p-grid  p-ai-center p-col-12 mt-7 border-top" *ngIf="saleItem.length > 0 ? true : false">
+      <div class="p-col-6 text-right" >
+       <strong>Total Amount</strong>
+      </div>
+      <div class="p-col-2 text-right pr-11">
+        {{totalAmount  | number: "1.0-0"}}
+      </div>
+      <div class="p-col-2 text-right">
+        <p-checkbox [(ngModel)]="isComplete" binary="true" inputId="isComplete" (onChange) = "makeComplete()"></p-checkbox>
+        <label for="isComplete" style="padding-left: 5px;">Is Complete</label>
+      </div>
+    </div>
+
+    <div class="p-grid  p-ai-center p-col-12" *ngIf="saleItem.length > 0 ? true : false">
+      <div class="p-col-6" style="text-align: right;">
+       <strong>Pay Amount</strong>
+      </div>
+      <div class="p-col-2 text-right">
+        <p-inputNumber class="input-right" [(ngModel)]="payAmount" (onBlur)="calculateAmount()"  min="0"></p-inputNumber>
+      </div>
+      <div class="p-col-2 text-right" >
+        <strong style="color: red">Credit Amount</strong>
+       </div>
+       <div class="p-col-2 " style="color: red; padding-left: 10px;">
+        <span *ngIf = "totalAmount >= payAmount">
+          {{creditAmount | number: "1.0-0"}}
+        </span>
+        <span *ngIf = "payAmount  > totalAmount">
+          0
+        </span>
+
+       </div>
+    </div>
+
+    <p-footer>        
+        <div class="p-grid p-jc-end">
+            <button class ="p-col-1" type="button" pButton (click)="save()" label="Save"></button>
+            <button class ="p-col-1" type="button" pButton class="p-button-secondary" (click)="cancel()" label="Cancel"></button>
+        </div>
+    </p-footer>
+</p-dialog>

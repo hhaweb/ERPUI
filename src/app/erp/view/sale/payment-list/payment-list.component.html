@@ -1,0 +1,130 @@
+<div class="p-grid mt-7">
+    <div class="p-col-12">
+        <p-card header="Payment List">
+            <div class="p-grid p-jc-end">
+                <div class="p-col-3">
+                    <button pButton pRipple type="button" (click)="create()" label="Add Payment" class="mr-10 p-button-success"></button>
+                    <button pButton pRipple type="button" (click)="export()" label="Export" class="mr-10 p-button-success"></button>
+                    <button pButton type="button" (click)="reset()" class="w-150 p-button-info"
+                    label="Refresh"></button>
+                </div>
+            </div>
+            <div class="p-grid p-jc-center">
+                <div class="p-col-10">
+                    <p-table #dt [value]="paymentList"   [paginator]="true" [rows]="100" [rowsPerPageOptions]="[100,200,200]" [loading]="tableLoading"
+                    [totalRecords]="totalRecord" [responsive]="true" lazy = "true"   [lazyLoadOnInit]="true" (onLazyLoad)="tableLazyLoadEvent($event)">
+                        <ng-template pTemplate="colgroup" let-columns>
+                            <colgroup>
+                                <col style="width: 50px;"> <!-- id -->
+                                <col style="width: 150px;"> <!-- Name -->
+                                <col style="width: 90px;"> <!-- pay date -->
+                                <col style="width: 90px;"> <!-- pay amount -->
+                                <col style="width: 100px;"> <!-- payment type -->
+                                <col style="width: 150px;"> <!-- payment type -->
+                                <col style="width: 90px;"> <!-- Action -->
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr class="white-background">
+                                <th colspan="3" class="text-right">Total</th>
+                                <th class="text-right black">
+                                    <span *ngIf = "totalPayAmount > 0" class="one-line-span">{{totalPayAmount  | number: "1.0-0"}}</span>
+                                </th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" pSortableColumn="id">Id
+                                    <p-sortIcon field="id"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="customerName">Customer Name
+                                    <p-sortIcon field="customerName"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="payDate">Payment Date
+                                    <p-sortIcon field="payDate"></p-sortIcon>
+                                </th>
+                                <th class="text-right" pSortableColumn="payAmount">Pay Amount
+                                    <p-sortIcon field="payAmount"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="saleId">Payment Type
+                                    <p-sortIcon field="saleId"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="remark">Remark
+                                    <p-sortIcon field="remark"></p-sortIcon>
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                            <tr class="white-background">
+                                <th>
+                                    <input class="width-full" pInputText type="text"  [(ngModel)]="selectedId"
+                                    (input)="dt.filter($event.target.value, 'id', 'contains')"/>
+                                </th>
+                                <th>
+                                    <p-multiSelect  #customer  [options]="availableCustomerName" (onChange)="dt.filter($event.value, 'customerName', 'in')"
+                                    appendTo="body" [(ngModel)]="selectedCustomerName" >
+                                        <p-footer>
+                                        <button pButton type="button"(click)="selectedCustomerName = [];dt.filter(null, 'customerName', 'in');customer.hide()"
+                                            class="width-auto p-button-secondary margin-right-10" label="Clear"></button>
+                                        </p-footer>
+                                    </p-multiSelect>
+                                </th>
+                                <th>
+                                    <p-calendar [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }"  [(ngModel)]="selectedPayDate"
+                                    [showIcon]="true" [showButtonBar]="true" appendTo="body" name="selectedPayDate" dateFormat="dd/mm/yy"
+                                    (onClearClick)="dt.filter(null, 'payDate', 'contains')" (onSelect)="dt.filter(selectedPayDate, 'payDate', 'contains')">
+                                    </p-calendar>
+                                </th>
+                                <th>
+                                </th>
+                                <th>
+                                    <p-multiSelect  #type  [options]="availableType" (onChange)="dt.filter($event.value, 'type', 'in')"
+                                    appendTo="body" [(ngModel)]="selectedType" >
+                                        <p-footer>
+                                        <button pButton type="button"(click)="selectedType = [];dt.filter(null, 'type', 'in');type.hide()"
+                                            class="width-auto p-button-secondary margin-right-10" label="Clear"></button>
+                                        </p-footer>
+                                    </p-multiSelect>
+                                </th>
+                                <th>
+                                    <input class="width-full" pInputText type="text"  [(ngModel)]="selectedRemark"
+                                    (input)="dt.filter($event.target.value, 'id', 'contains')"/>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-payment let-rowIndex="rowIndex" let-columns="payment">
+                            <tr>
+                                <td>{{payment.id}}</td>
+                                <td><span class="one-line-span" [pTooltip]="payment.customerName">{{payment.customerName}}</span></td>
+                                <td><span *ngIf="payment.payDate != null" class="one-line-span" >{{payment.payDate || '' | date: 'dd/MM/yyyy'}}</span></td>
+                                <td class="text-right"><span class="one-line-span">{{payment.payAmount  | number: "1.0-0"}}</span></td>
+                                <td class="text-left">
+                                    <span class="one-line-span" *ngIf="payment.type">{{payment.type}}</span>
+                                </td>
+                                <td><span class="one-line-span" [pTooltip]="payment.remark">{{payment.remark}}</span></td>
+                                <td>
+                                    <!-- <a>
+                                        <i class="pi pi-pencil pr-15" (click) = "edit(payment)"></i>
+                                    </a> -->
+                                    <a >
+                                        <i class="pi pi-trash red" (click)="delete($event, payment.id)"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td [attr.colspan]="7">
+                                    No records found
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+
+        </p-card>
+    </div>
+</div>
+
+
+<app-add-payment-dialog #createPaymentDialog (RefreshListEvent) = 'reset()'></app-add-payment-dialog>

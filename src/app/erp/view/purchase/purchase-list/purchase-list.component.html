@@ -1,0 +1,122 @@
+<div class="p-grid mt-7">
+    <div class="p-col-12">
+        <p-card header="Purchase List">
+            <div class="p-grid p-jc-end">
+                <div class="p-col-3">
+                    <button pButton pRipple type="button" (click)="create()" label="Create Purchase" class="mr-10 p-button-success"></button>
+                    <button pButton pRipple type="button" (click)="export()" label="Export" class="mr-10 p-button-success"></button>
+
+                    <button pButton type="button" (click)="reset()" class="w-150 p-button-info"
+                    label="Refresh"></button>
+                </div>
+            </div>
+            <div class="p-grid p-jc-center">
+                <div class="p-col-10">
+                    <p-table #dt [value]="purchaseList"   paginator="true" rows="100" [rowsPerPageOptions]="[100,200,200]" [loading]="tableLoading"
+                    [totalRecords]="totalRecord" responsive="true" lazy = "true"   [lazyLoadOnInit]="false" (onLazyLoad)="tableLazyLoadEvent($event)">
+                        <ng-template pTemplate="colgroup" let-columns>
+                            <colgroup>
+                                <col style="width: 50px;"> <!-- id -->
+                                <col style="width: 150px;"> <!-- Name -->
+                                <col style="width: 100px;"> <!-- purchase date -->
+                                <col style="width: 100px;"> <!-- pay amount -->
+                                <col style="width: 100px;"> <!-- credit -->
+                                <col style="width: 100px;"> <!-- total amount -->
+                                <col style="width: 100px;"> <!-- Action -->
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr class="white-background">
+                                <th colspan="3" class="text-right font-bold">Total</th>
+                                <th class="text-right black font-bold"><span pTooltip="Total pay Amount" *ngIf = "purchaseHeader.totalPayAmount > 0" class="one-line-span">{{purchaseHeader.totalPayAmount  | number: "1.0-0"}}</span></th>
+                                <th class="text-right black font-bold">
+                                    <span pTooltip="Credit Amount" *ngIf = "purchaseHeader.totalCreditAmount > 0" class="one-line-span red">{{purchaseHeader.totalCreditAmount  | number: "1.0-0"}}</span>
+                                    <span pTooltip="Prepaid Amount" *ngIf = "0 > purchaseHeader.totalCreditAmount " class="one-line-span green">{{purchaseHeader.totalCreditAmount * -1  | number: "1.0-0"}}</span>
+                                </th> 
+                                <th class="text-right black font-bold"><span pTooltip="Total buy Amount" *ngIf = "purchaseHeader.totalBuyAmount > 0" class="one-line-span">{{purchaseHeader.totalBuyAmount  | number: "1.0-0"}}</span></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" pSortableColumn="purchaseId">id
+                                    <p-sortIcon field="purchaseId"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="supplierName">Supplier Name
+                                    <p-sortIcon field="supplierName"></p-sortIcon>
+                                </th>
+                                <th class="text-left" pSortableColumn="purchaseDate">Purchase Date
+                                    <p-sortIcon field="purchaseDate"></p-sortIcon>
+                                </th>
+                                <th class="text-right" pSortableColumn="payAmount">Pay Amount
+                                    <p-sortIcon field="payAmount"></p-sortIcon>
+                                </th>
+                                <th class="text-right" pSortableColumn="creditAmount">Credit Amount
+                                    <p-sortIcon field="creditAmount"></p-sortIcon>
+                                </th>
+                                <th class="text-right" pSortableColumn="buyTotal">Total Amount
+                                    <p-sortIcon field="buyTotal"></p-sortIcon>
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                            <tr class="white-background">
+                                <th>
+                                    <input class="width-full" pInputText type="text"  [(ngModel)]="selectedId"
+                                    (input)="dt.filter($event.target.value, 'id', 'contains')"/>
+                                </th>
+                                <th>
+                                    <p-multiSelect  #supplier  [options]="availableSupplierName" (onChange)="dt.filter($event.value, 'supplierName', 'in')"
+                                    appendTo="body" [(ngModel)]="selectedSupplierName" >
+                                        <p-footer>
+                                        <button pButton type="button"(click)="selectedSupplierName = [];dt.filter([], 'supplierName', 'in');supplier.hide()"
+                                            class="width-auto p-button-secondary margin-right-10" label="Clear"></button>
+                                        </p-footer>
+                                    </p-multiSelect>
+                                </th>
+                                <th>
+                                    <p-calendar [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }"  [(ngModel)]="selectedPurchaseDate"
+                                    [showIcon]="true" [showButtonBar]="true" appendTo="body" name="selectedPurchaseDate" dateFormat="dd/mm/yy"
+                                    (onClearClick)="dt.filter(null, 'purchaseDate', 'contains')" (onSelect)="dt.filter(selectedPurchaseDate, 'purchaseDate', 'contains')">
+                                    </p-calendar>
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-purchase let-rowIndex="rowIndex" let-columns="purchase">
+                            <tr>
+                                <td>{{purchase.purchaseId}}</td>
+                                <td><span class="one-line-span" [pTooltip]="purchase.supplierName">{{purchase.supplierName}}</span></td>
+                                <td><span *ngIf="purchase.purchaseDate != null" class="one-line-span" >{{purchase.purchaseDate || '' | date: 'dd/MM/yyyy'}}</span></td>
+                                <td class="text-right"><span class="one-line-span">{{purchase.payAmount  | number: "1.0-0"}}</span></td>
+                                <td class="text-right">
+                                    <span pTooltip="Debit Amount"  *ngIf = " 0 > purchase.creditAmount" class="one-line-span green">{{ -1 * purchase.creditAmount  | number: "1.0-0"}}</span>
+                                    <span pTooltip="Credit Amount"  *ngIf = "purchase.creditAmount > 0" class="one-line-span red">{{purchase.creditAmount  | number: "1.0-0"}}</span>
+                                </td>
+                                <td class="text-right"><span class="one-line-span">{{purchase.buyTotal  | number: "1.0-0"}}</span></td>
+                                <td>
+                                    <a>
+                                        <i class="pi pi-pencil pr-15" (click) = "edit(purchase)"></i>
+                                    </a>
+                                    <a>
+                                        <i class="pi pi-trash red" (click)="delete($event, purchase.purchaseId)"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td [attr.colspan]="7">
+                                    No records found
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+
+        </p-card>
+    </div>
+</div>
+
+<app-add-purchase-dialog #purchaseDialog (RefreshListEvent) = 'reset()'></app-add-purchase-dialog>

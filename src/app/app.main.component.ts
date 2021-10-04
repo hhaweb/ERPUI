@@ -1,4 +1,5 @@
-import { ConfigData } from './erp/models/config/config.model';
+import { forkJoin } from 'rxjs';
+import { ConfigData, SystemConfigResponse } from './erp/models/config/config.model';
 import { ERPRoutes } from './erp/models/routes/erp-routes';
 import { Component, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -40,6 +41,7 @@ export class AppMainComponent implements OnInit, OnDestroy{
 
     menuActive: boolean;
 
+
     menuHoverActive: boolean;
     configDialogActive: boolean;
     constructor(
@@ -63,7 +65,51 @@ export class AppMainComponent implements OnInit, OnDestroy{
           });
         if (this.authenticationService.isAuthorized()) {
             this.authenticationService.UserLoggedIn.next(true);
-           // this.loadApplicationData();
+            const loadSystemConfig = this.authenticationService.getSystemConfig();
+            forkJoin([loadSystemConfig]).subscribe(
+                (data: any) => {
+                  const currentUser = data[0].data;
+                  const systemConfigResponse: SystemConfigResponse = data[0];
+                  this.configData = new ConfigData();
+                  this.configData.SystemConfigData = systemConfigResponse;
+                  this.configData.UserInfo = currentUser;
+                  this.configDataLoadedEvent.fire(this.configData);
+
+                //   this.cookieService.set(
+                //     'currentUser',
+                //     JSON.stringify(currentUser),
+                //     1,
+                //     '/'
+                //   );
+                //   this.cookieService.set(
+                //     'routePermissions',
+                //     JSON.stringify(this.configData.SystemConfigData.RoutePermissions),
+                //     1,
+                //     '/'
+                //   );
+                //   this.configDataLoadedEvent.fire(this.configData);
+          
+                //   const remainingDays =
+                //     this.authenticationService.getPasswordChangeRemainingDays(
+                //       currentUser.PasswordAge
+                //     );
+                //   if (remainingDays <= 0) {
+                //     return;
+                //   } else if (remainingDays < 10) {
+                //     this.pstUtilityService.showWarning(
+                //       'Consider Changing Your Password',
+                //       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+                //       'Your password will expire in ' + remainingDays + ' days.'
+                //     );
+                //   }
+                },
+                (error: any) => {
+                  this.erpUtilityService.subscribeError(error, '');
+                },
+                () => {
+                  this.erpUtilityService.hideLoading();
+                }
+              );
           } else {
             // this.redirectToLogin();
           }

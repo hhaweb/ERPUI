@@ -14,12 +14,14 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';;
+import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
+import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
+import { SupplierListComponent } from './supplier-list/supplier-list.component';;
 
 
 
 @NgModule({
-  declarations: [CustomerListComponent, AddCustomerDialogComponent],
+  declarations: [CustomerListComponent, AddCustomerDialogComponent, AddSupplierDialogComponent, SupplierListComponent],
   imports: [
     CommonModule,
     CustomerRoutingModule,

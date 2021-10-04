@@ -1,6 +1,16 @@
 export class Item {
-    public Id: number;
+    public id: number;
     public name: string;
+    public sellPrice: number;
+    public buyPrice: number;
     public createdDate: string;
     public updatedDate: string;
+}
+
+export class SelectItemType {
+    label: string;
+    value: any;
+    price: number;
+    disabled: boolean;
+    
 }

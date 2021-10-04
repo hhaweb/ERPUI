@@ -1,3 +1,4 @@
+import { Purchase } from './../purchase/purchase';
 export const ERPRoutes = {
   // login module routes
   Login: 'login',
@@ -11,4 +12,6 @@ export const ERPRoutes = {
   CustomerList: 'customer-list',
   CustomerEntry: 'customer-entry',
   Item: 'item',
+  Sale: 'sale',
+  Purchase: 'purchase',
 };

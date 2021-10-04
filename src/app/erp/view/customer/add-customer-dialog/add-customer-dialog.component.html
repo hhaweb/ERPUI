@@ -3,12 +3,12 @@
        Add Customer
     </p-header>
     <div class="p-grid p-ai-center p-col-12">
-        <div class="p-col-2">Id</div>
+        <div class="p-col-2">id</div>
         <div class="p-col-4">
-          <span *ngIf="customer.Id" style="font-weight: bold;">
-            {{customer.Id}}
+          <span *ngIf="customer.id" style="font-weight: bold;">
+            {{customer.id}}
           </span>
-          <span *ngIf="!customer.Id">
+          <span *ngIf="!customer.id">
              TBA
           </span>
         </div>
@@ -39,6 +39,13 @@
         <div class="p-col-2">Address</div>
         <div class="p-col-4">
             <textarea rows="1" cols="30" pInputTextarea autoResize="autoResize" [(ngModel)]="customer.address"></textarea>
+        </div>
+    </div>
+
+    <div class="p-grid p-ai-center p-col-12">
+        <div class="p-col-2">Remark</div>
+        <div class="p-col-4">
+            <textarea [(ngModel)]="customer.remark" rows="2" cols="30" pInputTextarea></textarea>
         </div>
     </div>
 
